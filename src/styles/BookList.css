@@ -1,19 +1,18 @@
-/* src/styles/BookList.css */
 .book-list-container {
-  padding: 20px;
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .book-list {
-  list-style: none;
-  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .book-item {
   width: 150px;
+  margin: 10px;
   text-align: center;
 }
 
@@ -23,12 +22,19 @@
 }
 
 .book-item p {
-  margin-top: 10px;
-  font-size: 1em;
-  color: #333;
+  margin: 10px 0;
 }
 
-.book-item .btn {
-  margin-top: 10px;
-  font-size: 1em;
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
 }

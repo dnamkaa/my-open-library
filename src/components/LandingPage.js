@@ -1,4 +1,3 @@
-// src/components/LandingPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchBooks } from '../services/api';
@@ -6,15 +5,22 @@ import '../styles/LandingPage.css';
 
 const LandingPage = () => {
   const [query, setQuery] = useState('');
-  const [featuredBooks, setFeaturedBooks] = useState([]);
+  const [trendingBooks, setTrendingBooks] = useState([]);
+  const [classicBooks, setClassicBooks] = useState([]);
+  const [recentlyReturnedBooks, setRecentlyReturnedBooks] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getFeaturedBooks = async () => {
-      const books = await fetchBooks('trending');
-      setFeaturedBooks(books.slice(0, 6));
+    const getBooks = async () => {
+      const trending = await fetchBooks('trending');
+      const classic = await fetchBooks('classic');
+      const recentlyReturned = await fetchBooks('recently-returned');
+
+      setTrendingBooks(trending.slice(0, 6));
+      setClassicBooks(classic.slice(0, 6));
+      setRecentlyReturnedBooks(recentlyReturned.slice(0, 6));
     };
-    getFeaturedBooks();
+    getBooks();
   }, []);
 
   const handleSearch = (event) => {
@@ -45,33 +51,39 @@ const LandingPage = () => {
       </header>
       <main className="main-content">
         <div className="container">
-          <h2>Trending Books</h2>
-          <div className="book-list">
-            {featuredBooks.map((book) => (
-              <div className="book-item" key={book.key}>
-                <img
-                  src={
-                    book.cover_i
-                      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-                      : 'https://via.placeholder.com/150'
-                  }
-                  alt={book.title}
-                />
-                {/* <p>{book.title}</p> */}
-                {/* <p>{book.author_name && book.author_name.join(', ')}</p> */}
-                <button
-                  className="btn btn-primary"
-                  onClick={() => navigate(`/read/${book.key}`)}
-                >
-                  Preview Only
-                </button>
-              </div>
-            ))}
-          </div>
+          <Section title="Trending Books" books={trendingBooks} />
+          <Section title="Classic Books" books={classicBooks} />
+          <Section title="Recently Returned" books={recentlyReturnedBooks} />
         </div>
       </main>
     </div>
   );
 };
+
+const Section = ({ title, books }) => (
+  <div className="book-section">
+    <h2>{title}</h2>
+    <div className="book-list">
+      {books.map((book) => (
+        <div className="book-item" key={book.key}>
+          <img
+            src={
+              book.cover_i
+                ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+                : 'https://via.placeholder.com/150'
+            }
+            alt={book.title}
+          />
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(`/read/${book.key}`)}
+          >
+            {title === 'Trending Books' ? 'Preview Only' : 'Read'}
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 export default LandingPage;
