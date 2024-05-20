@@ -1,0 +1,11 @@
+/* src/styles/BookReader.css */
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  div {
+    font-size: 1.2em;
+    line-height: 1.6;
+  }
+  
