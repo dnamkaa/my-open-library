@@ -1,0 +1,34 @@
+.book-section {
+  margin: 20px 0;
+}
+
+.book-item {
+  text-align: center;
+  padding: 10px;
+}
+
+.book-cover {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+  margin: 0 auto 10px;
+}
+
+.read-button {
+  width: 100px;
+  margin-top: 10px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.read-button:hover {
+  background-color: #0056b3;
+}

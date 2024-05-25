@@ -1,27 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchBooks } from '../services/api';
+import Section from './Section';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import '../styles/LandingPage.css';
+import axios from 'axios';
 
 const LandingPage = () => {
   const [query, setQuery] = useState('');
   const [trendingBooks, setTrendingBooks] = useState([]);
   const [classicBooks, setClassicBooks] = useState([]);
   const [recentlyReturnedBooks, setRecentlyReturnedBooks] = useState([]);
+  const [localEbooks, setLocalEbooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getBooks = async () => {
-      const trending = await fetchBooks('trending');
-      const classic = await fetchBooks('classic');
-      const recentlyReturned = await fetchBooks('recently-returned');
+  const getBooks = useCallback(async () => {
+    try {
+      const [trending, classic, recentlyReturned] = await Promise.all([
+        fetchBooks('trending'),
+        fetchBooks('classic'),
+        fetchBooks('recently-returned')
+      ]);
 
-      setTrendingBooks(trending.slice(0, 6));
-      setClassicBooks(classic.slice(0, 6));
-      setRecentlyReturnedBooks(recentlyReturned.slice(0, 6));
-    };
-    getBooks();
+      const localEbooksResponse = await axios.get('http://localhost:5000/ebooks');
+
+      setTrendingBooks(trending);
+      setClassicBooks(classic);
+      setRecentlyReturnedBooks(recentlyReturned);
+      setLocalEbooks(localEbooksResponse.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    getBooks();
+  }, [getBooks]);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -51,39 +69,20 @@ const LandingPage = () => {
       </header>
       <main className="main-content">
         <div className="container">
-          <Section title="Trending Books" books={trendingBooks} />
-          <Section title="Classic Books" books={classicBooks} />
-          <Section title="Recently Returned" books={recentlyReturnedBooks} />
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <>
+              <Section title="Trending Books" books={trendingBooks} navigate={navigate} />
+              <Section title="Classic Books" books={classicBooks} navigate={navigate} />
+              <Section title="Recently Returned" books={recentlyReturnedBooks} navigate={navigate} />
+              <Section title="Local eBooks" books={localEbooks} navigate={navigate} isLocal />
+            </>
+          )}
         </div>
       </main>
     </div>
   );
 };
-
-const Section = ({ title, books }) => (
-  <div className="book-section">
-    <h2>{title}</h2>
-    <div className="book-list">
-      {books.map((book) => (
-        <div className="book-item" key={book.key}>
-          <img
-            src={
-              book.cover_i
-                ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-                : 'https://via.placeholder.com/150'
-            }
-            alt={book.title}
-          />
-          <button
-            className="btn btn-primary"
-            onClick={() => navigate(`/read/${book.key}`)}
-          >
-            {title === 'Trending Books' ? 'Preview Only' : 'Read'}
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-);
 
 export default LandingPage;
