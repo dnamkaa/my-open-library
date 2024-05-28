@@ -1,86 +1,75 @@
-import React, { useState, useEffect, useCallback } from 'react';
+// src/components/LandingPage.js
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchBooks } from '../services/api';
-import Section from './Section';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { fetchEbooks, fetchOpenLibraryBooks } from '../services/api';
 import '../styles/LandingPage.css';
-import axios from 'axios';
 
 const LandingPage = () => {
-  const [query, setQuery] = useState('');
-  const [trendingBooks, setTrendingBooks] = useState([]);
-  const [classicBooks, setClassicBooks] = useState([]);
-  const [recentlyReturnedBooks, setRecentlyReturnedBooks] = useState([]);
-  const [localEbooks, setLocalEbooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [localBooks, setLocalBooks] = useState([]);
+  const [openLibraryBooks, setOpenLibraryBooks] = useState([]);
   const navigate = useNavigate();
 
-  const getBooks = useCallback(async () => {
-    try {
-      const [trending, classic, recentlyReturned] = await Promise.all([
-        fetchBooks('trending'),
-        fetchBooks('classic'),
-        fetchBooks('recently-returned')
-      ]);
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        // Fetch local books
+        const localBooksData = await fetchEbooks();
+        setLocalBooks(localBooksData);
 
-      const localEbooksResponse = await axios.get('http://localhost:5000/ebooks');
-
-      setTrendingBooks(trending);
-      setClassicBooks(classic);
-      setRecentlyReturnedBooks(recentlyReturned);
-      setLocalEbooks(localEbooksResponse.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching books:', error);
-      setIsLoading(false);
-    }
+        // Fetch Open Library books
+        const openLibraryBooksData = await fetchOpenLibraryBooks();
+        setOpenLibraryBooks(openLibraryBooksData);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    };
+    fetchBooks();
   }, []);
 
-  useEffect(() => {
-    getBooks();
-  }, [getBooks]);
-
-  const handleSearch = (event) => {
-    event.preventDefault();
-    if (query) {
-      navigate(`/search?q=${query}`);
+  const handleReadClick = (bookId, filename, externalUrl) => {
+    if (externalUrl) {
+      window.open(externalUrl, '_blank');
+    } else if (filename) {
+      navigate(`/local-read/${filename}`);
+    } else {
+      navigate(`/read/${bookId}`);
     }
   };
 
   return (
     <div className="landing-page">
       <header className="header">
-        <div className="container">
-          <h1 className="title">Welcome to Open Library</h1>
-          <form className="search-form" onSubmit={handleSearch}>
-            <input
-              type="text"
-              className="form-control search-input"
-              placeholder="Search for books..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <button type="submit" className="btn btn-primary search-button">
-              <i className="fa fa-search"></i>
-            </button>
-          </form>
+        <h1>Welcome to Open Library</h1>
+        <div className="header-buttons">
+          <button>Read Free Library Books Online</button>
+          <button>Set a Yearly Reading Goal</button>
+          <button>Keep Track of Your Favorite Books</button>
         </div>
       </header>
-      <main className="main-content">
-        <div className="container">
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              <Section title="Trending Books" books={trendingBooks} navigate={navigate} />
-              <Section title="Classic Books" books={classicBooks} navigate={navigate} />
-              <Section title="Recently Returned" books={recentlyReturnedBooks} navigate={navigate} />
-              <Section title="Local eBooks" books={localEbooks} navigate={navigate} isLocal />
-            </>
-          )}
+      <section className="book-section">
+        <h2>Local Books</h2>
+        <div className="book-list">
+          {localBooks.map((book) => (
+            <div key={book.id} className="book-item">
+              <img src={book.cover_url} alt={book.title} />
+              <p>{book.title}</p>
+              <button onClick={() => handleReadClick(book.id, book.filename, null)}>Read</button>
+            </div>
+          ))}
         </div>
-      </main>
+      </section>
+      <section className="book-section">
+        <h2>Open Library Books</h2>
+        <div className="book-list">
+          {openLibraryBooks.map((book) => (
+            <div key={book.key} className="book-item">
+              <img src={`https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`} alt={book.title} />
+              <p>{book.title}</p>
+              <button onClick={() => handleReadClick(book.key, null, `https://openlibrary.org${book.key}`)}>Read</button>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

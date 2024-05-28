@@ -1,37 +1,54 @@
-// src/services/api.js
-import axios from 'axios';
-
-const API_URL = 'https://openlibrary.org';
-
-export const fetchBooks = async (category) => {
+export const fetchEbooks = async () => {
   try {
-    const response = await fetch(`${API_URL}/subjects/${category}.json?limit=10`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data.works || [];
+    const response = await fetch('http://localhost:5000/ebooks');
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching books:', error);
-    return [];
+    console.error('Error fetching eBooks:', error);
+    throw error;
   }
 };
 
 
-export const fetchBookDetails = async (id) => {
+export const fetchClassicBooks = async () => {
   try {
-    const response = await axios.get(`${API_URL}/works/${id}.json`);
-    return response.data;
+    const response = await fetch('https://openlibrary.org/subjects/classics.json?limit=10');
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching classic books:', error);
+    throw error;
+  }
+};
+
+export const fetchBookDetails = async (bookId) => {
+  try {
+    const response = await fetch(`https://openlibrary.org/works/${bookId}.json`);
+    return await response.json();
   } catch (error) {
     console.error('Error fetching book details:', error);
+    throw error;
   }
 };
 
-export const fetchBookContent = async (id) => {
+
+
+export const fetchBookContent = async (bookId) => {
   try {
-    const response = await axios.get(`${API_URL}/works/${id}.json`);
-    return response.data.content; // Adjust based on actual API response structure
+    const response = await fetch(`http://localhost:5000/ebooks/${bookId}`);
+    return await response.json();
   } catch (error) {
     console.error('Error fetching book content:', error);
+    throw error;
+  }
+};
+// services/api.js
+
+export const fetchOpenLibraryBooks = async () => {
+  try {
+    const response = await fetch('https://openlibrary.org/subjects/classics.json?limit=10');
+    const data = await response.json();
+    return data.works;
+  } catch (error) {
+    console.error('Error fetching Open Library books:', error);
+    throw error;
   }
 };

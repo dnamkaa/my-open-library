@@ -1,64 +1,37 @@
-/* src/styles/LandingPage.css */
 .landing-page {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
-  }
-  
-  .header {
-    background-color: #fff;
-    padding: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .header .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .logo {
-    height: 50px;
-    margin-bottom: 10px;
-  }
-  
-  .title {
-    font-size: 24px;
-    margin: 10px 0;
-  }
-  
-  .search-form {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-  }
-  
-  .search-button {
-    padding: 10px;
-    background-color: #007bff;
-    border: 1px solid #007bff;
-    color: #fff;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-  }
-  
-  .main-content {
-    padding: 20px 0;
-  }
-  
-  .container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
+  text-align: center;
+}
+
+.header {
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.book-section {
+  margin: 20px;
+}
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.book-item {
+  margin: 10px;
+  text-align: center;
+}
+
+.book-item img {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.book-item button {
+  margin-top: 10px;
+}

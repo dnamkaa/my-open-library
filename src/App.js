@@ -2,21 +2,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
-import BookDetails from './components/BookDetails';
-import BookReader from './components/BookReader';
-import UploadBook from './components/UploadBook';
+import EbookReader from './components/EbookReader';
+import LocalEbookReader from './components/LocalEbookReader';
+import UploadForm from './components/UploadForm';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/book/:id" element={<BookDetails />} />
-        <Route path="/read/:id" element={<BookReader />} />
-        <Route path="/upload" element={<UploadBook />} />
+        <Route path="/read/:id" element={<EbookReader />} />
+        <Route path="/local-read/:filename" element={<LocalEbookReader />} />
+        <Route path="/upload" element={<UploadForm />} />
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
