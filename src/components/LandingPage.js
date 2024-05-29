@@ -8,6 +8,7 @@ import logo from '../library.png';
 const LandingPage = () => {
   const [localBooks, setLocalBooks] = useState([]);
   const [openLibraryBooks, setOpenLibraryBooks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +27,23 @@ const LandingPage = () => {
     };
     fetchBooks();
   }, []);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // Add search logic here if needed (e.g., filter books based on searchTerm)
+  };
+
+  const filteredLocalBooks = localBooks.filter(book =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredOpenLibraryBooks = openLibraryBooks.filter(book =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleReadClick = (bookId, filename, externalUrl) => {
     if (externalUrl) {
@@ -49,11 +67,21 @@ const LandingPage = () => {
           <button>Set a Yearly Reading Goal</button>
           <button>Keep Track of Your Favorite Books</button>
         </div>
+        <form className="search-form" onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search for a book..."
+            className="search-input"
+          />
+          <button type="submit" className="search-button">Search</button>
+        </form>
       </header>
       <section className="book-section">
         <h2>Local Books</h2>
         <div className="book-list">
-          {localBooks.map((book) => (
+          {filteredLocalBooks.map((book) => (
             <div key={book.id} className="book-item">
               <img src={book.cover_url} alt={book.title} />
               <p>{book.title}</p>
@@ -65,7 +93,7 @@ const LandingPage = () => {
       <section className="book-section">
         <h2>Open Library Books</h2>
         <div className="book-list">
-          {openLibraryBooks.map((book) => (
+          {filteredOpenLibraryBooks.map((book) => (
             <div key={book.key} className="book-item">
               <img src={`https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`} alt={book.title} />
               <p>{book.title}</p>
