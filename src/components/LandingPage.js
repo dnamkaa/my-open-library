@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchEbooks, fetchOpenLibraryBooks } from '../services/api';
 import '../styles/LandingPage.css';
-import logo from '../library.png';
 
 const LandingPage = () => {
   const [localBooks, setLocalBooks] = useState([]);
@@ -29,27 +28,17 @@ const LandingPage = () => {
 
   const handleReadClick = (bookId, filename, externalUrl) => {
     if (externalUrl) {
-      window.open(externalUrl, '_blank');
+      navigate('/external-read', { state: { iframeSrc: externalUrl } });
     } else if (filename) {
-      navigate(`/local-read/${filename}`);
+      navigate(`/local-read/${filename}`, { state: { iframeSrc: `/path/to/local/books/${filename}` } });
     } else {
-      navigate(`/read/${bookId}`);
+      navigate(`/read/${bookId}`, { state: { iframeSrc: `/path/to/online/books/${bookId}` } });
     }
   };
 
   return (
     <div className="landing-page">
-      <header className="header">
-      <div className="logo-heading">
-      <img src={logo} alt="Logo" className="logo" />
-        <h1>Welcome to Open Library</h1>
-      </div>
-        <div className="header-buttons">
-          <button>Read Free Library Books Online</button>
-          <button>Set a Yearly Reading Goal</button>
-          <button>Keep Track of Your Favorite Books</button>
-        </div>
-      </header>
+     
       <section className="book-section">
         <h2>Local Books</h2>
         <div className="book-list">
