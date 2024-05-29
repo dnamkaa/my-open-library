@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchEbooks, fetchOpenLibraryBooks } from '../services/api';
 import '../styles/LandingPage.css';
+import logo from '../library.png';
 
 const LandingPage = () => {
   const [localBooks, setLocalBooks] = useState([]);
@@ -39,7 +40,10 @@ const LandingPage = () => {
   return (
     <div className="landing-page">
       <header className="header">
+      <div className="logo-heading">
+      <img src={logo} alt="Logo" className="logo" />
         <h1>Welcome to Open Library</h1>
+      </div>
         <div className="header-buttons">
           <button>Read Free Library Books Online</button>
           <button>Set a Yearly Reading Goal</button>
