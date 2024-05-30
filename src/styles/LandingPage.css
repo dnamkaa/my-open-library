@@ -1,5 +1,6 @@
+/* src/styles/LandingPage.css */
 .landing-page {
-  text-align: center;
+  padding: 20px;
 }
 
 .header {
@@ -27,13 +28,55 @@
   gap: 10px;
 }
 
-.header h1 {
-  margin: 0;
+.header-buttons {
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.header-buttons button {
+  margin: 5px;
+  border-radius: 8px;
+}
+
+.search-form {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  width: 280px;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  display: inline-block;
+  margin: 5px;
+  background-color: #007bff; /* Blue background color */
+  color: #ffffff; /* White text color */
+  border: none;
+  border-radius: 10px; /* Rounded corners */
+  cursor: pointer;
+  text-decoration: none; /* Remove default underline */
+  font-size: 16px;
+}
+.search-button:hover{
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
 .book-section {
-  margin: 20px;
+  margin-top: 20px;
 }
+ 
+ .book-section h2 {
+  text-align: center;
+} 
 
 .book-list {
   display: flex;
@@ -52,6 +95,11 @@
   object-fit: cover;
 }
 
-.book-item button {
-  margin-top: 10px;
+.book-item p {
+  margin: 10px 0; 
+}
+
+.book-item button{
+  border-radius: 8px;
+  background-color: #88ff00;
 }
