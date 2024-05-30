@@ -46,22 +46,18 @@ const LandingPage = () => {
 
   const handleReadClick = (bookId, filename, externalUrl) => {
     if (externalUrl) {
-      navigate('/external-read', { state: { iframeSrc: externalUrl } });
+      window.open(externalUrl, '_blank');
     } else if (filename) {
-      navigate(`/local-read/${filename}`, { state: { iframeSrc: `/path/to/local/books/${filename}` } });
+      navigate(`/local-read/${filename}`);
     } else {
-      navigate(`/read/${bookId}`, { state: { iframeSrc: `/path/to/online/books/${bookId}` } });
+      navigate(`/read/${bookId}`);
     }
   };
 
   return (
     <div className="landing-page">
-     
       <header className="header">
-        <div className="logo-heading">
-          <img src={logo} alt="Logo" className="logo" />
-          <h1>Welcome to Open Library</h1>
-        </div>
+        <h1>Welcome to Open Library</h1>
         <div className="header-buttons">
           <button>Read Free Library Books Online</button>
           <button>Set a Yearly Reading Goal</button>
@@ -85,7 +81,7 @@ const LandingPage = () => {
             <div key={book.id} className="book-item">
               <img src={book.cover_url} alt={book.title} />
               <p>{book.title}</p>
-              <button onClick={() => handleReadClick(book.id, book.title, null)}>Read</button>
+              <button onClick={() => handleReadClick(book.id, book.filename, null)}>Read</button>
             </div>
           ))}
         </div>
