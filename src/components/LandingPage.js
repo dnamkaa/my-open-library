@@ -40,10 +40,10 @@ const LandingPage = () => {
   return (
     <div className="landing-page">
       <header className="header">
-      <div className="logo-heading">
-      <img src={logo} alt="Logo" className="logo" />
-        <h1>Welcome to Open Library</h1>
-      </div>
+        <div className="logo-heading">
+          <img src={logo} alt="Logo" className="logo" />
+          <h1>Welcome to Open Library</h1>
+        </div>
         <div className="header-buttons">
           <button>Read Free Library Books Online</button>
           <button>Set a Yearly Reading Goal</button>
@@ -57,7 +57,7 @@ const LandingPage = () => {
             <div key={book.id} className="book-item">
               <img src={book.cover_url} alt={book.title} />
               <p>{book.title}</p>
-              <button onClick={() => handleReadClick(book.id, book.filename, null)}>Read</button>
+              <button onClick={() => handleReadClick(book.id, book.title, null)}>Read</button>
             </div>
           ))}
         </div>

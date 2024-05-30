@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import EbookReader from './components/EbookReader';
-import LocalEbookReader from './components/LocalEbookReader';
+import LocalEbookReader from './components/LocalEbookReader'; // Importing LocalEbookReader from its file
 import UploadForm from './components/UploadForm';
 
 const App = () => {
