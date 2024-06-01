@@ -1,4 +1,5 @@
 // Header.js
+import '../styles/Header.css';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../library.png';

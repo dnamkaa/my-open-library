@@ -13,11 +13,9 @@ const LandingPage = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        // Fetch local books
         const localBooksData = await fetchEbooks();
         setLocalBooks(localBooksData);
 
-        // Fetch Open Library books
         const openLibraryBooksData = await fetchOpenLibraryBooks();
         setOpenLibraryBooks(openLibraryBooksData);
       } catch (error) {
@@ -33,7 +31,6 @@ const LandingPage = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Add search logic here if needed (e.g., filter books based on searchTerm)
   };
 
   const filteredLocalBooks = localBooks.filter(book =>
@@ -46,34 +43,27 @@ const LandingPage = () => {
 
   const handleReadClick = (bookId, filename, externalUrl) => {
     if (externalUrl) {
-      window.open(externalUrl, '_blank');
+      navigate('/external-read', { state: { iframeSrc: externalUrl } });
     } else if (filename) {
-      navigate(`/local-read/${filename}`);
+      navigate(`/local-read/${filename}`, { state: { iframeSrc: `/path/to/local/books/${filename}` } });
     } else {
-      navigate(`/read/${bookId}`);
+      navigate(`/read/${bookId}`, { state: { iframeSrc: `/path/to/online/books/${bookId}` } });
     }
   };
 
   return (
     <div className="landing-page">
-      <header className="header">
-        <h1>Welcome to Open Library</h1>
-        <div className="header-buttons">
-          <button>Read Free Library Books Online</button>
-          <button>Set a Yearly Reading Goal</button>
-          <button>Keep Track of Your Favorite Books</button>
-        </div>
-        <form className="search-form" onSubmit={handleSearchSubmit}>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search for a book..."
-            className="search-input"
-          />
-          <button type="submit" className="search-button">Search</button>
-        </form>
-      </header>
+      <form className="search-form" onSubmit={handleSearchSubmit}>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search for a book..."
+          className="search-input"
+        />
+        <button type="submit" className="search-button">Search</button>
+      </form>
+
       <section className="book-section">
         <h2>Local Books</h2>
         <div className="book-list">

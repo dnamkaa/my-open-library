@@ -3,26 +3,6 @@
   padding: 20px;
 }
 
-.header {
-  padding: 20px;
-  background-color: #f8f9fa;
-  display: flex;
-  align-items: center;
-  /* justify-content: space-between; */
-  flex-direction: column;
-}
-
-.logo-heading {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  width: 150px; /* Adjust the size as needed */
-  height: 100px;
-  margin-right: 15px; /* Space between the logo and the heading */
-}
-
 .header-buttons {
   display: flex;
   gap: 10px;
