@@ -1,11 +1,12 @@
 // src/components/LandingPage.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchEbooks, fetchOpenLibraryBooks } from '../services/api';
+//import { fetchEbooks, fetchOpenLibraryBooks } from '../services/api';  //for local
+import {fetchOpenLibraryBooks } from '../services/api';
 import '../styles/LandingPage.css';
 
 const LandingPage = () => {
-  const [localBooks, setLocalBooks] = useState([]);
+ // const [localBooks, setLocalBooks] = useState([]);
   const [openLibraryBooks, setOpenLibraryBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ const LandingPage = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const localBooksData = await fetchEbooks();
-        setLocalBooks(localBooksData);
+        // const localBooksData = await fetchEbooks();
+        // setLocalBooks(localBooksData);
 
         const openLibraryBooksData = await fetchOpenLibraryBooks();
         setOpenLibraryBooks(openLibraryBooksData);
@@ -33,9 +34,9 @@ const LandingPage = () => {
     e.preventDefault();
   };
 
-  const filteredLocalBooks = localBooks.filter(book =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredLocalBooks = localBooks.filter(book =>
+  //   book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   const filteredOpenLibraryBooks = openLibraryBooks.filter(book =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -64,7 +65,7 @@ const LandingPage = () => {
         <button type="submit" className="search-button">Search</button>
       </form>
 
-      <section className="book-section">
+      {/* <section className="book-section">
         <h2>Local Books</h2>
         <div className="book-list">
           {filteredLocalBooks.map((book) => (
@@ -75,7 +76,7 @@ const LandingPage = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
       <section className="book-section">
         <h2>Open Library Books</h2>
         <div className="book-list">
